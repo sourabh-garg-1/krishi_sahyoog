@@ -1,20 +1,55 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View,TextInput } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Bars3Icon, MagnifyingGlassIcon } from "react-native-heroicons/outline";
+import { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Home from './components/Home';
+import About from './components/About';
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const [inp, onChangeinp] = useState("");
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="About" component={About} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
+// 
+// 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+    marginLeft: 10,
+  },
+  input: {
+    borderRadius: 5,
+    flex:1,
+  },
+  searchconatiner: {
+    backgroundColor: '#fff',
+    padding: 10,
+    marginHorizontal: 10,
+    flexDirection: 'row',
+    borderWidth: 1,
+    marginVertical: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  word: {
+    fontSize: 18,
+    marginLeft: 50,
+  },
+  
 });
