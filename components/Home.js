@@ -1,12 +1,18 @@
-import { View, Text, FlatList, StyleSheet, TextInput } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
-import {MagnifyingGlassIcon } from "react-native-heroicons/outline";
-import { useNavigation } from '@react-navigation/native';
+import { MagnifyingGlassIcon } from "react-native-heroicons/outline";
 import React, { useLayoutEffect, useState, useEffect } from 'react'
 import axios from 'axios';
 import HeadSection from './HeadSection';
 
-const Home = () => {
+const Home = ({navigation}) => {
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false
+    });
+  }, [])
+
   const [data, setData] = useState([])
   const [finaldata, setfinaldata] = useState([]);
   const [Value, onChangeValue] = useState("");
@@ -41,33 +47,25 @@ const Home = () => {
 
   function onChangetext(text) {
     onChangeValue(text);
-    if(text){
+    if (text) {
       let result = data.filter((c) => {
         return c.commodity.toLowerCase().includes(text.toLowerCase());
       });
       setfinaldata(result);
-    }else{
+    } else {
       setfinaldata(data);
     }
-    
+
   }
 
   useEffect(() => {
     getdata();
   }, [])
 
-  const navigation = useNavigation();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false
-    });
-  }, [])
-
   return (
     <SafeAreaView>
       <HeadSection />
-      <View style = {styles.searchconatiner}>
+      <View style={styles.searchconatiner}>
         <MagnifyingGlassIcon size={20} color="#000" />
         <TextInput
           style={styles.input}
@@ -81,11 +79,15 @@ const Home = () => {
       <FlatList
         data={finaldata}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{item.commodity}</Text>
-            <Text>updated on {item.arrival_date}</Text>
-            <Text style={{ marginTop: 5 }}>Min Rs.{item.min_price} - Max Rs.{item.max_price}</Text>
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate('Details', {commodity: item.commodity})}>
+            <View style={styles.card}>
+              <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{item.commodity}</Text>
+              <Text>updated on {item.arrival_date}</Text>
+              <Text style={{ marginTop: 5 }}>Min Rs.{item.min_price} - Max Rs.{item.max_price}</Text>
 
+            </View>
+            </TouchableOpacity>
           </View>
         )}
       />
